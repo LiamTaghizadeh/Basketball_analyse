@@ -203,93 +203,6 @@ class PlayerParser:
             return round(lbs / 2.20462)
         return ''
 
-class ClubParser:
-    def __init__(self, html_content, season='2026'):
-        self.soup = BeautifulSoup(html_content, 'html.parser')
-        self.season = season
-        self.data = {}
-
-    def parse(self):
-        title_tag = self.soup.find('h1')
-        if title_tag:
-            self.data['club_name'] = title_tag.get_text(strip=True)
-        else:
-            self.data['club_name'] = ''
-
-        roster_table = self.soup.find('table', id='roster')
-        if not roster_table:
-            roster_table = self.soup.find('table', {'class': 'roster'})
-        if roster_table:
-            self._parse_roster(roster_table)
-
-        info_box = self.soup.find('div', id='info')
-        if not info_box:
-            info_box = self.soup.find('div', class_='team_info')
-        if info_box:
-            info_text = info_box.get_text(separator='\n')
-            patterns = {
-                'coach': r'Coach:\s*(.*?)(?:\n|$)',
-                'arena': r'Arena:\s*(.*?)(?:\n|$)',
-                'founded': r'Founded:\s*(\d{4})',
-                'league': r'League:\s*(.*?)(?:\n|$)',
-                'championships': r'NBA Championships:\s*(\d+)',
-            }
-            for key, pattern in patterns.items():
-                match = re.search(pattern, info_text, re.IGNORECASE)
-                self.data[key] = match.group(1).strip() if match else ''
-            if not self.data.get('league'):
-                self.data['league'] = 'NBA'
-        else:
-            self.data['coach'] = ''
-            self.data['arena'] = ''
-            self.data['founded'] = ''
-            self.data['league'] = 'NBA'
-            self.data['championships'] = ''
-
-        players = self.data.get('players', [])
-        ages = []
-        for p in players:
-            if 'birth_date' in p and p['birth_date']:
-                year_match = re.search(r'\b(\d{4})\b', p['birth_date'])
-                if year_match:
-                    birth_year = int(year_match.group(1))
-                    ages.append(datetime.now().year - birth_year)
-        self.data['avg_age'] = round(sum(ages) / len(ages), 1) if ages else ''
-
-        return self.data
-
-    def _parse_roster(self, table):
-        tbody = table.find('tbody')
-        if not tbody:
-            return
-        rows = tbody.find_all('tr')
-        players_list = []
-        for row in rows:
-            player_data = {}
-            name_tag = row.find('a')
-            if name_tag:
-                player_data['name'] = name_tag.get_text(strip=True)
-            else:
-                name_td = row.find('td', class_='player')
-                if name_td:
-                    player_data['name'] = name_td.get_text(strip=True)
-                else:
-                    continue
-
-            pos_td = row.find('td', class_='pos') or (row.find_all('td')[2] if len(row.find_all('td')) > 2 else None)
-            player_data['position'] = pos_td.get_text(strip=True) if pos_td else ''
-
-            ht_td = row.find('td', class_='height') or (row.find_all('td')[3] if len(row.find_all('td')) > 3 else None)
-            player_data['height'] = ht_td.get_text(strip=True) if ht_td else ''
-
-            wt_td = row.find('td', class_='weight') or (row.find_all('td')[4] if len(row.find_all('td')) > 4 else None)
-            player_data['weight'] = wt_td.get_text(strip=True) if wt_td else ''
-
-            bd_td = row.find('td', class_='birth_date') or (row.find_all('td')[5] if len(row.find_all('td')) > 5 else None)
-            player_data['birth_date'] = bd_td.get_text(strip=True) if bd_td else ''
-
-            players_list.append(player_data)
-        self.data['players'] = players_list
 
 def process_players(gamers_dir, output_file='players.csv'):
     all_players = []
@@ -331,54 +244,7 @@ def process_players(gamers_dir, output_file='players.csv'):
             writer.writerow(player)
     print(f"Players saved to {output_file}")
 
-def process_clubs(clubs_dir, output_file='clubs.csv', season='2026'):
-    all_clubs = []
-    count = 0
-    total_files = len([f for f in os.listdir(clubs_dir) if f.endswith('.html')])
-    for filename in os.listdir(clubs_dir):
-        if filename.endswith('.html'):
-            count += 1
-            filepath = os.path.join(clubs_dir, filename)
-            with open(filepath, 'r', encoding='utf-8') as f:
-                html = f.read()
-            parser = ClubParser(html, season)
-            data = parser.parse()
-            data['file'] = filename
 
-            if 'players' in data and data['players']:
-                player_names = '; '.join([p.get('name', '') for p in data['players']])
-                player_count = len(data['players'])
-                data['players_list'] = player_names
-                data['player_count'] = player_count
-                if not data.get('avg_age'):
-                    ages = []
-                    for p in data['players']:
-                        if 'birth_date' in p and p['birth_date']:
-                            year_match = re.search(r'\b(\d{4})\b', p['birth_date'])
-                            if year_match:
-                                birth_year = int(year_match.group(1))
-                                ages.append(datetime.now().year - birth_year)
-                    data['avg_age'] = round(sum(ages) / len(ages), 1) if ages else ''
-            else:
-                data['players_list'] = ''
-                data['player_count'] = 0
-                data['avg_age'] = ''
-
-            all_clubs.append(data)
-            print(f"[{count}/{total_files}] Processed club: {data.get('club_name', filename)}")
-    
-    if not all_clubs:
-        print("No club files found.")
-        return
-    
-    fieldnames = ['club_name', 'league', 'founded', 'coach', 'arena', 'championships',
-                  'player_count', 'avg_age', 'players_list', 'file']
-    with open(output_file, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
-        writer.writeheader()
-        for club in all_clubs:
-            writer.writerow(club)
-    print(f"Clubs saved to {output_file}")
 
 def main():
     gamers_dir = "basketball_pages/gamers"
