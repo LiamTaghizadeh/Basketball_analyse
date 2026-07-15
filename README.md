@@ -71,8 +71,8 @@
 2.  **ایجاد محیط مجاز (Virtual Environment)** (اختیاری اما پیشنهادی):
     ```bash
     python -m venv venv
-    source venv/bin/activate   # برای لینوکس/مک
-    venv\Scripts\activate      # برای ویندوز
+    source venv/bin/activate   # mac/linux
+    venv\Scripts\activate      # windows
     ```
 
 3.  **نصب کتابخانه‌های مورد نیاز**:
