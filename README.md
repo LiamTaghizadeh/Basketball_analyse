@@ -62,29 +62,29 @@
 
 برای اجرای این پروژه بر روی سیستم خود، مراحل زیر را به ترتیب دنبال کنید:
 
-1.  **کلون کردن مخزن**:
+  **کلون کردن مخزن**:
     ```bash
     git clone https://github.com/your-username/basketball-data-bootcamp.git
     cd basketball-data-bootcamp
     ```
 
-2.  **ایجاد محیط مجاز (Virtual Environment)** (اختیاری اما پیشنهادی):
+  **ایجاد محیط مجاز (Virtual Environment)** (اختیاری اما پیشنهادی):
     ```bash
     python -m venv venv
     source venv/bin/activate   # mac/linux
     venv\Scripts\activate      # windows
     ```
 
-3.  **نصب کتابخانه‌های مورد نیاز**:
+  **نصب کتابخانه‌های مورد نیاز**:
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **اجرای اسکریپت استخراج داده و ساخت دیتابیس**:
+  **اجرای اسکریپت استخراج داده و ساخت دیتابیس**:
    
     
 
-5.  **اجرای نوت‌بوک تحلیل آماری**:
+  **اجرای نوت‌بوک تحلیل آماری**:
 
 
 ---
