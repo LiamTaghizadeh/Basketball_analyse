@@ -194,6 +194,7 @@ class Player_Cleaner(Data_Cleaner):
     def select_rename(self):
         select_column = ["full_name",
                          "nickname",
+                         "position",
                            "shoots","nationality",
                            "height_inches","weight_lbs",
                            "college",
