@@ -8,10 +8,13 @@
 
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/your-username/your-repo)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/LiamTaghizadeh/Basketball_analyse)
 [![SQL](https://img.shields.io/badge/SQL-Database-blue.svg)]()
 [![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup-4.12-brightgreen.svg)]()
 [![Selenium](https://img.shields.io/badge/Selenium-4.15-brightgreen.svg)]()
+[![Pandas](https://img.shields.io/badge/Pandas-2.0-150458?logo=pandas)](https://pandas.pydata.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red?logo=sqlalchemy)](https://www.sqlalchemy.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28-FF4B4B?logo=streamlit)](https://streamlit.io/)
 
 ## 📌 نمای کلی پروژه
 
