@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange.svg)](https://jupyter.org/)
 [![pandas](https://img.shields.io/badge/pandas-1.3%2B-yellow.svg)](https://pandas.pydata.org/)
-[![Status](https://img.shields.io/badge/Status-فعال-brightgreen.svg)]()
+[![Status](https://img.shields.io/badge/Status-active-brightgreen.svg)]()
 
 > **فاز سوم** از پروژه تحلیل بسکتبال، به پیاده‌سازی روش‌های پیشرفته‌ی **آمار استنباطی** و **تحلیل علیتی** اختصاص دارد. در این مرحله، داده‌های خام پردازش‌شده از فازهای قبل، وارد بستر آزمون‌های فرضیه، برآورد بازه‌های اطمینان و اندازه‌گیری اثرات واقعی می‌شوند تا تصمیم‌گیری در مورد عملکرد تیم‌ها و بازیکنان، مبتنی بر شواهد ریاضی باشد.
 
